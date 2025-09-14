@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
+  <title>Phishing Shield - Advanced Security Analysis</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Professional Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Font Awesome for Security Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- App CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100">
+  <header class="w-full">
+    <nav
+      class="mx-auto max-w-5xl px-4 py-4 flex items-center justify-between"
+      aria-label="Top Navigation"
+    >
+      <div class="flex items-center space-x-4">
+        <div class="relative">
+          <span
+            class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-500 shadow-lg border border-blue-400/20"
+            aria-hidden="true"
+          >
+            <i class="fas fa-shield-alt text-white text-lg"></i>
+          </span>
+          <div class="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-slate-900 flex items-center justify-center">
+            <i class="fas fa-check text-xs text-white"></i>
+          </div>
+        </div>
+        <div>
+          <h1 class="text-2xl md:text-3xl font-bold logo-text">
+            PHISHING SHIELD
+          </h1>
+          <p class="text-xs text-slate-400 font-medium">Advanced Security Analysis</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <button id="sample-btn" class="y2k-button-secondary text-sm flex items-center space-x-2">
+          <i class="fas fa-clipboard-list"></i>
+          <span class="hidden sm:inline">Paste Sample</span>
+        </button>
+        <button id="settings-btn" class="y2k-button-secondary p-3">
+          <i class="fas fa-cog text-sm"></i>
+        </button>
+        <a
+          href="#learn"
+          class="hidden sm:inline-block y2k-button-secondary text-sm flex items-center space-x-2"
+        >
+          <i class="fas fa-graduation-cap"></i>
+          <span>Learn</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="px-4 pb-16">
+    <section
+      class="mx-auto max-w-5xl y2k-container"
+      aria-labelledby="analyzer-title"
+    >
+      <h2 id="analyzer-title" class="sr-only">Phishing Analyzer</h2>
+
+      <div class="text-center mb-8">
+        <h2 class="text-2xl md:text-3xl font-bold text-slate-100 mb-3">
+          Advanced Phishing Detection
+        </h2>
+        <p class="text-base md:text-lg text-slate-300 max-w-2xl mx-auto">
+          Analyze suspicious messages with our multi-layered security engine. Get
+          <span class="font-semibold text-blue-400">real-time risk assessment</span> and
+          <span class="font-semibold text-cyan-400">AI-powered analysis</span>.
+        </p>
+        <div class="flex items-center justify-center space-x-6 mt-4 text-sm text-slate-400">
+          <div class="flex items-center space-x-2">
+            <i class="fas fa-shield-check text-green-500"></i>
+            <span>Privacy First</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <i class="fas fa-bolt text-yellow-500"></i>
+            <span>Instant Analysis</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <i class="fas fa-brain text-purple-500"></i>
+            <span>AI Powered</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4 flex items-center justify-between">
+        <label for="message-input" class="font-semibold text-slate-200 flex items-center space-x-2">
+          <i class="fas fa-envelope text-blue-400"></i>
+          <span>Message Analysis</span>
+        </label>
+
+        <label class="inline-flex items-center space-x-3 text-sm select-none bg-slate-800/50 px-3 py-2 rounded-lg">
+          <input type="checkbox" id="live-scan-toggle" class="toggle" checked />
+          <span class="text-slate-300">Live scan</span>
+          <i class="fas fa-circle text-green-500 text-xs animate-pulse"></i>
+        </label>
+      </div>
+
+      <textarea
+        id="message-input"
+        rows="8"
+        placeholder="Paste your email, DM, or SMS here…"
+        class="y2k-input w-full resize-y"
+        aria-describedby="char-count"
+      ></textarea>
+
+      <div
+        id="char-count"
+        class="mt-2 text-xs text-slate-400 text-right font-medium"
+        aria-live="polite"
+      >
+        0 characters
+      </div>
+
+      <div
+        class="flex flex-col md:flex-row justify-center gap-4 mt-8 w-full"
+        role="group"
+        aria-label="Actions"
+      >
+        <button id="analyze-button" class="y2k-button flex-1 font-semibold flex items-center justify-center space-x-2">
+          <i class="fas fa-search-plus"></i>
+          <span>ANALYZE (AI + Heuristics)</span>
+        </button>
+        <button id="reply-button" class="y2k-button flex-1 font-semibold flex items-center justify-center space-x-2">
+          <i class="fas fa-reply"></i>
+          <span>GENERATE SAFE REPLY</span>
+        </button>
+        <button id="consent-button" class="hidden">
+          <!-- Send (Consent) to Gemini -->
+        </button>
+        <button id="clear-button" class="y2k-button-secondary flex-1 font-semibold flex items-center justify-center space-x-2">
+          <i class="fas fa-trash-alt"></i>
+          <span>Clear</span>
+        </button>
+      </div>
+
+      <!-- Risk Meter -->
+      <div class="mt-8 bg-slate-800/30 rounded-xl p-4 border border-slate-700/50" aria-live="polite" aria-atomic="true">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center space-x-2">
+            <i class="fas fa-exclamation-triangle text-orange-500"></i>
+            <span class="font-semibold text-slate-200">Risk Assessment</span>
+          </div>
+          <span id="risk-label" class="text-sm px-3 py-1 rounded-full bg-slate-700 border border-slate-600 text-slate-300">
+            <i class="fas fa-question-circle mr-1"></i>Unknown
+          </span>
+        </div>
+        <div class="risk-bar">
+          <div id="risk-fill" class="risk-fill" style="width: 0%"></div>
+        </div>
+        <p class="text-xs text-slate-400 mt-2">Real-time security analysis powered by advanced heuristics</p>
+      </div>
+
+      <!-- Results -->
+      <div id="result-container" class="mt-8 w-full hidden">
+        <div
+          id="loading-indicator"
+          class="flex justify-center items-center gap-4 bg-slate-800/30 rounded-xl p-6 border border-slate-700/50"
+        >
+          <div class="flex space-x-1">
+            <div class="w-3 h-3 bg-blue-500 rounded-full animate-bounce"></div>
+            <div class="w-3 h-3 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+            <div class="w-3 h-3 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+          </div>
+          <p class="text-slate-200 text-lg font-medium">Analyzing security patterns…</p>
+        </div>
+
+        <div
+          id="analysis-result"
+          class="y2k-result transition-all duration-500 ease-in-out transform"
+          aria-live="polite"
+          aria-atomic="true"
+        ></div>
+      </div>
+
+      <!-- Links Found -->
+      <div id="links-panel" class="mt-8 hidden bg-slate-800/30 rounded-xl p-4 border border-slate-700/50">
+        <div class="flex items-center space-x-2 mb-4">
+          <i class="fas fa-link text-blue-400"></i>
+          <h3 class="text-xl font-bold text-slate-200">Detected Links</h3>
+          <span class="bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full text-xs font-medium">Analysis</span>
+        </div>
+        <ul id="links-list" class="space-y-3"></ul>
+      </div>
+
+      <!-- Education -->
+      <div id="learn" class="mt-12 bg-gradient-to-r from-slate-800/50 to-slate-700/50 rounded-xl p-6 border border-slate-600/50">
+        <div class="flex items-center space-x-2 mb-4">
+          <i class="fas fa-graduation-cap text-purple-400"></i>
+          <h3 class="text-xl font-bold text-slate-200">How Our Security Engine Works</h3>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="space-y-3">
+            <div class="flex items-center space-x-2">
+              <i class="fas fa-search text-blue-400"></i>
+              <span class="font-semibold text-slate-200">Real-time Analysis</span>
+            </div>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              Detects urgency words, payment requests, suspicious link patterns, and credential harvesting attempts.
+            </p>
+          </div>
+          <div class="space-y-3">
+            <div class="flex items-center space-x-2">
+              <i class="fas fa-brain text-purple-400"></i>
+              <span class="font-semibold text-slate-200">AI-Powered Insights</span>
+            </div>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              Advanced machine learning models analyze context and patterns that traditional filters might miss.
+            </p>
+          </div>
+          <div class="space-y-3">
+            <div class="flex items-center space-x-2">
+              <i class="fas fa-shield-check text-green-400"></i>
+              <span class="font-semibold text-slate-200">Privacy Protected</span>
+            </div>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              Your data stays secure. Local analysis runs in your browser, with optional AI processing only with consent.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Settings Modal -->
+  <dialog id="settings-modal" class="settings-modal">
+    <form method="dialog" class="settings-card">
+      <header class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold">Settings</h2>
+        <button id="close-settings" class="y2k-button-secondary">✖</button>
+      </header>
+
+      <div class="space-y-4">
+        <div>
+          <label for="api-key" class="block text-sm font-semibold mb-1">
+            Gemini API Key
+          </label>
+          <input
+            id="api-key"
+            type="password"
+            placeholder="••••••••••••••••"
+            class="y2k-input w-full"
+            autocomplete="off"
+          />
+          <p class="mt-2 text-xs text-slate-300">
+            Stored locally in your browser for demo purposes. For production,
+            proxy requests server-side to keep keys secret.
+          </p>
+        </div>
+      </div>
+
+      <footer class="mt-6 flex items-center justify-end gap-2">
+        <button class="y2k-button-secondary">Cancel</button>
+        <button id="save-settings" class="y2k-button">Save</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <!-- Consent Modal -->
+  <dialog id="consent-modal" class="settings-modal">
+    <form method="dialog" class="settings-card" onsubmit="return false;">
+      <header class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold">Send (consent) to Gemini — Masked Preview</h2>
+        <button id="cancel-consent" class="y2k-button-secondary">✖</button>
+      </header>
+
+      <div class="space-y-4">
+        <div>
+          <p class="text-sm text-slate-300">
+            We will <strong>mask names, addresses, phone numbers, emails, account numbers, PINs, and card numbers</strong> before sending. The masked text below is what will be transmitted.
+          </p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-2">Masked Preview</label>
+          <pre id="masked-preview" class="masked-preview y2k-input" role="region" aria-live="polite">—</pre>
+        </div>
+
+        <div class="flex items-center space-x-3">
+          <input type="checkbox" id="consent-checkbox" class="toggle" />
+          <label for="consent-checkbox" class="text-sm">I consent to send the masked content to Gemini.</label>
+        </div>
+      </div>
+
+      <footer class="mt-6 flex items-center justify-end gap-2">
+        <button id="send-consent-btn" class="y2k-button" disabled>Send Masked Content</button>
+        <button id="close-consent-btn" class="y2k-button-secondary">Close</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <!-- App JS -->
+  <script src="script.js" defer></script>
+  <noscript>
+    <p class="text-center text-red-400">
+      JavaScript is required for this application.
+    </p>
+  </noscript>
+</body>
+</html>
