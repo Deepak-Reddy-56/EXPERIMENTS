@@ -142,15 +142,18 @@ function analyzeLinks(urlObjs) {
       })).filter((x) => x.dist > 0 && x.dist <= 2);
 
       const flags = [];
-      if (isIP) flags.push("IP-only host");
-      if (tooManyDots) flags.push("Many dots in hostname");
-      if (hasAt) flags.push("'@' present in URL");
-      if (tldSuspicious) flags.push(`Suspicious TLD .${tld}`);
-      if (lookalikes.length) flags.push("Possible brand lookalike");
+      if (isIP) flags.push("🚨 IP Address Only - No Domain Name");
+      if (tooManyDots) flags.push("🔗 Suspicious Subdomain Structure");
+      if (hasAt) flags.push("⚠️ Malformed URL with @ Symbol");
+      if (tldSuspicious) flags.push(`🌐 Suspicious TLD (.${tld}) - High Risk`);
+      if (lookalikes.length) {
+        const brandNames = lookalikes.map(l => l.brand).join(", ");
+        flags.push(`🎭 Brand Impersonation Detected (${brandNames})`);
+      }
 
       findings.push({ url: rawToShow, normalized: obj.normalized, host, tld, flags });
     } catch (_) {
-      findings.push({ url: rawToShow, host: "-", tld: "-", flags: ["Malformed URL"] });
+      findings.push({ url: rawToShow, host: "-", tld: "-", flags: ["❌ Invalid URL Format"] });
     }
   }
   return findings;
@@ -423,7 +426,7 @@ const addressRegex = /\b\d{1,5}[A-Za-z]?\s+(?:[A-Za-z0-9#]+\s?){1,6}(Street|St\.
 }
 
 // === Rendering ===
-function renderLinks(findings) {
+function renderLinks(findings, riskScore = 0) {
   linksList.innerHTML = "";
   if (!findings.length) {
     linksPanel.classList.add("hidden");
@@ -431,19 +434,60 @@ function renderLinks(findings) {
   }
   linksPanel.classList.remove("hidden");
   for (const f of findings) {
+    // Calculate link risk level based on overall risk score
+    let riskLevel = "Low";
+    let riskColor = "border-slate-700";
+    let riskBg = "bg-slate-900";
+    
+    // Use the overall risk score to determine link risk
+    if (riskScore >= 70) {
+      riskLevel = "High";
+      riskColor = "border-red-500";
+      riskBg = "bg-red-900/20";
+    } else if (riskScore >= 35) {
+      riskLevel = "Medium";
+      riskColor = "border-orange-500";
+      riskBg = "bg-orange-900/20";
+    } else {
+      // For low risk, still check if individual link has suspicious flags
+      const hasHighRiskFlags = f.flags.some(flag => 
+        flag.includes("Suspicious TLD") || 
+        flag.includes("Brand Impersonation") || 
+        flag.includes("Invalid URL Format") ||
+        flag.includes("IP Address Only")
+      );
+      
+      if (hasHighRiskFlags) {
+        riskLevel = "Medium";
+        riskColor = "border-orange-500";
+        riskBg = "bg-orange-900/20";
+      }
+    }
+
     const li = createEl("li", {
-      className: "p-3 rounded-lg bg-slate-900 border border-slate-700",
+      className: `p-3 rounded-lg ${riskBg} border ${riskColor}`,
     });
 
     const top = createEl("div", {
       className: "flex items-center justify-between gap-3",
     });
-    const urlSpan = createEl("span", { className: "truncate", text: f.url });
+    
+    // Add risk indicator
+    const riskIndicator = createEl("span", {
+      className: riskLevel === "High" ? "px-2 py-1 rounded-full bg-red-600 text-white text-xs font-bold" :
+                   riskLevel === "Medium" ? "px-2 py-1 rounded-full bg-orange-600 text-white text-xs font-bold" :
+                   "px-2 py-1 rounded-full bg-green-600 text-white text-xs font-bold",
+      text: `${riskLevel} RISK`
+    });
+    
+    const urlSpan = createEl("span", { className: "truncate text-white font-medium", text: f.url });
     const open = createEl("a", {
       className: "y2k-button-secondary text-xs",
       attrs: { href: f.normalized || f.url, target: "_blank", rel: "noopener noreferrer" },
-      text: "Open (cautiously)",
+      text: riskLevel === "High" ? "⚠️ Open at own risk" : "Open (cautiously)",
     });
+    
+    top.appendChild(riskIndicator);
     top.appendChild(urlSpan);
     top.appendChild(open);
 
@@ -460,13 +504,6 @@ function renderLinks(findings) {
         });
         flags.appendChild(chip);
       }
-    } else {
-      const ok = createEl("span", {
-        className:
-          "px-2 py-1 rounded-full bg-yellow-600/20 text-yellow-200 text-xs",
-        text: "⚠️ No obvious phishing flags detected - but still verify authenticity before clicking",
-      });
-      flags.appendChild(ok);
     }
 
     li.appendChild(top);
@@ -545,7 +582,7 @@ function renderAnalysisCard({ finalLevel, finalReason, heur, ai, note }) {
         lines.forEach(line => {
           if (line.trim()) {
             const li = createEl("li", { className: "text-base text-white font-medium" });
-            li.textContent = line.replace(/^[•\-\*]\s*/, '').trim();
+            li.textContent = line.replace(/^[•\-\*]\s*/, '').replace(/\*\*(.*?)\*\*/g, '$1').trim();
             ul.appendChild(li);
           }
         });
@@ -629,7 +666,7 @@ async function runAnalysis() {
 
   const heur = scoreHeuristics(text);
   setRisk(heur.score, heur.level);
-  renderLinks(heur.linkFindings);
+  renderLinks(heur.linkFindings, heur.score);
 
   let ai = null;
   try {
@@ -736,7 +773,7 @@ messageInput.addEventListener("input", () => {
 
   const heur = scoreHeuristics(text);
   setRisk(heur.score, heur.level);
-  renderLinks(heur.linkFindings);
+  renderLinks(heur.linkFindings, heur.score);
 
   resultContainer.classList.remove("hidden");
   loadingIndicator.style.display = "none";
