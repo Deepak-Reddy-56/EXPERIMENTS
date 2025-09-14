@@ -750,7 +750,7 @@ messageInput.addEventListener("input", () => {
 
 // Settings modal
 settingsBtn.addEventListener("click", () => {
-  apiKeyInput.value = localStorage.getItem(LS_KEY) || "AIzaSyDProgkS5MM96wGe-sUJ5z5f0b0HE95ayY";
+  apiKeyInput.value = localStorage.getItem(LS_KEY);
   settingsModal.showModal();
 });
 closeSettings.addEventListener("click", (e) => {
