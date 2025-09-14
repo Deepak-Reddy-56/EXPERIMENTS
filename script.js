@@ -464,7 +464,7 @@ function renderLinks(findings) {
       const ok = createEl("span", {
         className:
           "px-2 py-1 rounded-full bg-yellow-600/20 text-yellow-200 text-xs",
-        text: "⚠️ No obvious phishing flags detected - verify authenticity before clicking",
+        text: "⚠️ No obvious phishing flags detected - but still verify authenticity before clicking",
       });
       flags.appendChild(ok);
     }
@@ -529,11 +529,11 @@ function renderAnalysisCard({ finalLevel, finalReason, heur, ai, note }) {
     // Add AI Assessment section
     const aiSep = createEl("hr", { attrs: { role: "presentation" }, className: "mt-4 border-slate-600" });
     const aiTitle = createEl("p", {
-      className: "mt-4 font-semibold text-blue-400",
+      className: "mt-4 font-bold text-blue-400 text-3xl mb-4 leading-tight",
       text: "AI Assessment",
     });
     
-    const aiReasoning = createEl("div", { className: "mt-2 text-sm text-slate-300" });
+    const aiReasoning = createEl("div", { className: "mt-2 text-lg text-white font-medium" });
     
     // Format AI reasoning properly
     if (ai.reasoning && (ai.reasoning.includes('•') || ai.reasoning.includes('-') || ai.reasoning.includes('*'))) {
@@ -544,7 +544,7 @@ function renderAnalysisCard({ finalLevel, finalReason, heur, ai, note }) {
         const ul = createEl("ul", { className: "list-disc ml-4 space-y-1" });
         lines.forEach(line => {
           if (line.trim()) {
-            const li = createEl("li", { className: "text-xs" });
+            const li = createEl("li", { className: "text-base text-white font-medium" });
             li.textContent = line.replace(/^[•\-\*]\s*/, '').trim();
             ul.appendChild(li);
           }
@@ -565,21 +565,21 @@ function renderAnalysisCard({ finalLevel, finalReason, heur, ai, note }) {
     
     // Add official website if available
     if (ai.officialWebsite) {
-      const officialWebsiteSection = createEl("div", { className: "mt-4 p-4 bg-green-900/30 border border-green-500/50 rounded-lg" });
+      const officialWebsiteSection = createEl("div", { className: "mt-6 p-6 bg-green-900/40 border-2 border-green-500/60 rounded-xl shadow-lg" });
       
       const officialTitle = createEl("h4", {
-        className: "text-lg font-bold mb-2 text-green-400 flex items-center",
+        className: "text-2xl font-bold mb-4 text-green-400 flex items-center",
       });
       
-      const shieldIcon = createEl("i", { className: "fas fa-shield-check text-green-400 mr-2" });
+      const shieldIcon = createEl("i", { className: "fas fa-shield-check text-green-400 mr-3 text-xl" });
       officialTitle.appendChild(shieldIcon);
       officialTitle.appendChild(document.createTextNode("Official Website"));
       
-      const officialText = createEl("p", { className: "text-sm mb-2 text-green-300" });
+      const officialText = createEl("p", { className: "text-lg mb-4 text-green-300 font-medium" });
       officialText.textContent = "Use the official website:";
       
       const officialLink = createEl("a", {
-        className: "text-base text-green-300 hover:text-green-100 underline break-all font-medium",
+        className: "text-xl text-green-300 hover:text-green-100 underline break-all font-semibold block mb-4",
         attrs: { 
           href: ai.officialWebsite, 
           target: "_blank", 
@@ -588,8 +588,8 @@ function renderAnalysisCard({ finalLevel, finalReason, heur, ai, note }) {
         text: ai.officialWebsite
       });
       
-      const warningText = createEl("p", { className: "text-xs text-green-300 mt-2 italic" });
-      warningText.textContent = "⚠️ Verify the URL matches exactly";
+      const warningText = createEl("p", { className: "text-base text-green-300 font-medium bg-green-800/30 p-3 rounded-lg border border-green-400/30" });
+      warningText.textContent = "⚠️ Verify the URL matches exactly before clicking";
       
       officialWebsiteSection.appendChild(officialTitle);
       officialWebsiteSection.appendChild(officialText);
@@ -684,7 +684,7 @@ replyButton.addEventListener("click", async () => {
       className: "text-2xl font-bold mb-2",
       text: "✨ Suggested Safe Reply ✨",
     });
-    const body = createEl("p", { className: "text-base text-slate-900" });
+    const body = createEl("p", { className: "text-base text-white font-medium" });
     body.textContent = replyText;
 
     const copyBtn = createEl("button", {
@@ -805,6 +805,11 @@ sendConsentBtn.addEventListener("click", async (e) => {
   e.preventDefault();
   const text = messageInput.value.trim();
   if (!text) return;
+
+  // Close modal immediately and reset form
+  consentModal.close();
+  consentCheckbox.checked = false;
+  sendConsentBtn.disabled = true;
 
   const { masked, report } = maskSensitiveData(text);
 
