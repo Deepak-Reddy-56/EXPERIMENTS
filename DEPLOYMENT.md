@@ -1,5 +1,7 @@
 # 🚀 Deployment Guide - Phishing Detection App
 
+> ⚠️ **SECURITY WARNING**: Replace `YOUR_GEMINI_API_KEY_HERE` with your actual API key. Never commit real API keys to GitHub!
+
 ## 🌐 Easy Web-Based Deployment (No CLI Required)
 
 ### Option 1: Railway (Recommended - Easiest)
@@ -11,7 +13,7 @@
 5. **Select your repository** (you'll need to push this code to GitHub first)
 6. **Add Environment Variable:**
    - Name: `GEMINI_API_KEY`
-   - Value: `AIzaSyDProgkS5MM96wGe-sUJ5z5f0b0HE95ayY`
+   - Value: `YOUR_GEMINI_API_KEY_HERE`
 7. **Click "Deploy"**
 
 ### Option 2: Render
@@ -25,7 +27,7 @@
    - Start Command: `node server.js`
 6. **Add Environment Variable:**
    - Key: `GEMINI_API_KEY`
-   - Value: `AIzaSyDProgkS5MM96wGe-sUJ5z5f0b0HE95ayY`
+   - Value: `YOUR_GEMINI_API_KEY_HERE`
 7. **Click "Create Web Service"**
 
 ### Option 3: Vercel (Web Interface)
@@ -40,7 +42,7 @@
    - Output Directory: `.`
 6. **Add Environment Variable:**
    - Name: `GEMINI_API_KEY`
-   - Value: `AIzaSyDProgkS5MM96wGe-sUJ5z5f0b0HE95ayY`
+   - Value: `YOUR_GEMINI_API_KEY_HERE`
 7. **Click "Deploy"**
 
 ## 📋 Steps to Push to GitHub
