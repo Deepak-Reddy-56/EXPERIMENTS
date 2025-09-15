@@ -97,7 +97,7 @@ const LANGUAGE_PATTERNS = {
     }
   },
   fr: {
-    urgencyWords: ['urgent', 'immédiatement', 'agissez maintenant', 'temps limité', 'expire bientôt'],
+    urgencyWords: ['immédiatement', 'agissez maintenant', 'temps limité', 'expire bientôt', 'urgentement'],
     moneyWords: ['paiement', 'facture', 'remboursement', 'prix', 'loterie'],
     greetings: ['cher', 'bonjour', 'salut', 'salutations'],
     alerts: {
@@ -117,6 +117,442 @@ const LANGUAGE_PATTERNS = {
       credentialHarvest: "⚠ यह संदेश आपके लॉगिन क्रेडेंशियल चुराने की कोशिश कर रहा है। कोई भी लिंक पर क्लिक न करें।",
       generic: "⚠ यह संदेश फ़िशिंग हो सकता है, कृपया अपनी जानकारी साझा न करें।"
     }
+  },
+        de: {
+          urgencyWords: ['dringend', 'sofort', 'handeln sie jetzt', 'begrenzte zeit', 'läuft bald ab'],
+          moneyWords: ['zahlung', 'rechnung', 'rückerstattung', 'preis', 'lotterie'],
+          greetings: ['lieber', 'hallo', 'hi', 'grüße'],
+          alerts: {
+            bankScam: "⚠ Das sieht nach einem Bankbetrug aus. Teilen Sie niemals Ihr OTP mit jemandem.",
+            paymentFraud: "⚠ Verdächtige Zahlungsanfrage erkannt. Überprüfen Sie den Absender, bevor Sie fortfahren.",
+            credentialHarvest: "⚠ Diese Nachricht versucht, Ihre Anmeldedaten zu stehlen. Klicken Sie auf keine Links.",
+            generic: "⚠ Diese Nachricht scheint Phishing zu sein. Teilen Sie keine persönlichen Informationen."
+          }
+        },
+        ru: {
+          urgencyWords: ['срочно', 'немедленно', 'действуйте сейчас', 'ограниченное время', 'истекает скоро'],
+          moneyWords: ['платеж', 'счет', 'возврат', 'цена', 'лотерея'],
+          greetings: ['дорогой', 'привет', 'здравствуйте', 'привет'],
+          alerts: {
+            bankScam: "⚠ Это похоже на банковское мошенничество. Никогда не делитесь своим OTP с кем-либо.",
+            paymentFraud: "⚠ Обнаружен подозрительный запрос на оплату. Проверьте отправителя перед продолжением.",
+            credentialHarvest: "⚠ Это сообщение пытается украсть ваши учетные данные. Не нажимайте на ссылки.",
+            generic: "⚠ Это сообщение кажется фишингом. Не делитесь личной информацией."
+          }
+        }
+};
+
+// === UI Translations ===
+const UI_TRANSLATIONS = {
+  en: {
+    // Navigation
+    appTitle: "PHISHING SHIELD",
+    appSubtitle: "Advanced Security Analysis",
+    pasteSample: "Paste Sample",
+    learn: "Learn",
+    
+    // Main Content
+    mainTitle: "Advanced Phishing Detection",
+    mainSubtitle: "Analyze suspicious messages with our multi-layered security engine. Get real-time risk assessment and AI-powered analysis.",
+    privacyFirst: "Privacy First",
+    instantAnalysis: "Instant Analysis",
+    aiPowered: "AI Powered",
+    
+    // Form Elements
+    messageAnalysis: "Message Analysis",
+    liveScan: "Live scan",
+    placeholder: "Paste your email, DM, or SMS here…",
+    characters: "characters",
+    analyze: "ANALYZE (AI + Heuristics)",
+    generateReply: "GENERATE SAFE REPLY",
+    clear: "Clear",
+    
+    // Risk Assessment
+    riskAssessment: "Risk Assessment",
+    unknown: "Unknown",
+    realTimeAnalysis: "Real-time security analysis powered by advanced heuristics",
+    
+    // Results
+    highRisk: "🚨 HIGH RISK",
+    mediumRisk: "⚠️ MEDIUM RISK",
+    looksSafe: "✅ Looks Safe",
+    result: "ℹ️ Result",
+    keySignals: "Key Signals (local heuristics)",
+    noSignals: "No strong local phishing signals.",
+    aiAssessment: "AI Assessment",
+    
+    // Links
+    detectedLinks: "Detected Links",
+    analysis: "Analysis",
+    highRiskLink: "⚠️ Open at own risk",
+    openCautiously: "Open (cautiously)",
+    
+    // Features Section
+    howItWorks: "🛡️ How Our Security Engine Works",
+    featuresSubtitle: "Multi-layered protection powered by cutting-edge AI, adaptive learning, and real-time analysis",
+    realTimeAnalysisTitle: "Real-time Analysis",
+    realTimeAnalysisDesc: "Detects urgency words, payment requests, suspicious link patterns, and credential harvesting attempts as you type.",
+    liveScanning: "Live scanning",
+    noDelays: "No delays",
+    aiInsights: "AI-Powered Insights",
+    aiInsightsDesc: "Advanced machine learning models analyze context and patterns that traditional filters might miss.",
+    threatsTracked: "50+ threats tracked",
+    autoCalibrated: "Auto-calibrated",
+    privacyProtected: "Privacy Protected",
+    privacyProtectedDesc: "Your data stays secure. Local analysis runs in your browser, with optional AI processing only with consent.",
+    emails: "Emails",
+    pins: "PINs",
+    cards: "Cards",
+    punycodeDetection: "Punycode Detection",
+    punycodeDetectionDesc: "Detects homograph attacks using Unicode characters and domain spoofing",
+    personalizedAlerts: "Personalized Alerts",
+    personalizedAlertsDesc: "Customized detection patterns based on language and industry context",
+    multiLanguage: "Multi-language",
+    industryAware: "Industry-aware",
+    brandProtection: "Brand Protection",
+    brandProtectionDesc: "Detects brand impersonation attempts and suspicious domain variations",
+    typoDetection: "Typo detection",
+    similarityAnalysis: "Similarity analysis",
+    
+    // Alerts and Messages
+    doNotClick: "Do not click links or share information until independently verified.",
+    stayCautious: "Stay cautious and inspect links before clicking.",
+    
+    // Language Selector
+    selectLanguage: "Select Language",
+    english: "English",
+    spanish: "Español",
+    french: "Français",
+    hindi: "हिन्दी",
+    german: "Deutsch",
+    russian: "Русский",
+  },
+  es: {
+    appTitle: "ESCUDO ANTI-PHISHING",
+    appSubtitle: "Análisis de Seguridad Avanzado",
+    pasteSample: "Pegar Muestra",
+    learn: "Aprender",
+    mainTitle: "Detección Avanzada de Phishing",
+    mainSubtitle: "Analiza mensajes sospechosos con nuestro motor de seguridad multicapa. Obtén evaluación de riesgo en tiempo real y análisis impulsado por IA.",
+    privacyFirst: "Privacidad Primero",
+    instantAnalysis: "Análisis Instantáneo",
+    aiPowered: "Impulsado por IA",
+    messageAnalysis: "Análisis de Mensaje",
+    liveScan: "Escaneo en vivo",
+    placeholder: "Pega tu email, DM o SMS aquí…",
+    characters: "caracteres",
+    analyze: "ANALIZAR (IA + Heurísticas)",
+    generateReply: "GENERAR RESPUESTA SEGURA",
+    clear: "Limpiar",
+    riskAssessment: "Evaluación de Riesgo",
+    unknown: "Desconocido",
+    realTimeAnalysis: "Análisis de seguridad en tiempo real impulsado por heurísticas avanzadas",
+    highRisk: "🚨 ALTO RIESGO",
+    mediumRisk: "⚠️ RIESGO MEDIO",
+    looksSafe: "✅ Parece Seguro",
+    result: "ℹ️ Resultado",
+    keySignals: "Señales Clave (heurísticas locales)",
+    noSignals: "No hay señales fuertes de phishing locales.",
+    aiAssessment: "Evaluación de IA",
+    detectedLinks: "Enlaces Detectados",
+    analysis: "Análisis",
+    highRiskLink: "⚠️ Abrir bajo tu propio riesgo",
+    openCautiously: "Abrir (con precaución)",
+    howItWorks: "🛡️ Cómo Funciona Nuestro Motor de Seguridad",
+    featuresSubtitle: "Protección multicapa impulsada por IA de vanguardia, aprendizaje adaptativo y análisis en tiempo real",
+    realTimeAnalysisTitle: "Análisis en Tiempo Real",
+    realTimeAnalysisDesc: "Detecta palabras de urgencia, solicitudes de pago, patrones de enlaces sospechosos e intentos de recolección de credenciales mientras escribes.",
+    liveScanning: "Escaneo en vivo",
+    noDelays: "Sin retrasos",
+    aiInsights: "Insights Impulsados por IA",
+    aiInsightsDesc: "Modelos avanzados de aprendizaje automático analizan contexto y patrones que los filtros tradicionales podrían pasar por alto.",
+    threatsTracked: "50+ amenazas rastreadas",
+    autoCalibrated: "Auto-calibrado",
+    privacyProtected: "Privacidad Protegida",
+    privacyProtectedDesc: "Tus datos permanecen seguros. El análisis local se ejecuta en tu navegador, con procesamiento de IA opcional solo con consentimiento.",
+    emails: "Emails",
+    pins: "PINs",
+    cards: "Tarjetas",
+    punycodeDetection: "Detección de Punycode",
+    punycodeDetectionDesc: "Detecta ataques de homógrafos usando caracteres Unicode y suplantación de dominio",
+    personalizedAlerts: "Alertas Personalizadas",
+    personalizedAlertsDesc: "Patrones de detección personalizados basados en contexto de idioma e industria",
+    multiLanguage: "Multi-idioma",
+    industryAware: "Consciente de la industria",
+    brandProtection: "Protección de Marca",
+    brandProtectionDesc: "Detecta intentos de suplantación de marca y variaciones de dominio sospechosas",
+    typoDetection: "Detección de errores tipográficos",
+    similarityAnalysis: "Análisis de similitud",
+    doNotClick: "No hagas clic en enlaces ni compartas información hasta que sea verificado independientemente.",
+    stayCautious: "Mantente cauteloso e inspecciona los enlaces antes de hacer clic.",
+    selectLanguage: "Seleccionar Idioma",
+    english: "English",
+    spanish: "Español",
+    french: "Français",
+    hindi: "हिन्दी",
+    german: "Deutsch"
+  },
+  fr: {
+    appTitle: "BOUCLIER ANTI-HAMEÇONNAGE",
+    appSubtitle: "Analyse de Sécurité Avancée",
+    pasteSample: "Coller Échantillon",
+    learn: "Apprendre",
+    mainTitle: "Détection Avancée d'Hameçonnage",
+    mainSubtitle: "Analysez les messages suspects avec notre moteur de sécurité multicouche. Obtenez une évaluation des risques en temps réel et une analyse alimentée par l'IA.",
+    privacyFirst: "Confidentialité d'Abord",
+    instantAnalysis: "Analyse Instantanée",
+    aiPowered: "Alimenté par IA",
+    messageAnalysis: "Analyse de Message",
+    liveScan: "Scan en direct",
+    placeholder: "Collez votre email, DM ou SMS ici…",
+    characters: "caractères",
+    analyze: "ANALYSER (IA + Heuristiques)",
+    generateReply: "GÉNÉRER RÉPONSE SÉCURISÉE",
+    clear: "Effacer",
+    riskAssessment: "Évaluation des Risques",
+    unknown: "Inconnu",
+    realTimeAnalysis: "Analyse de sécurité en temps réel alimentée par des heuristiques avancées",
+    highRisk: "🚨 RISQUE ÉLEVÉ",
+    mediumRisk: "⚠️ RISQUE MOYEN",
+    looksSafe: "✅ Semble Sûr",
+    result: "ℹ️ Résultat",
+    keySignals: "Signaux Clés (heuristiques locales)",
+    noSignals: "Aucun signal fort de phishing local.",
+    aiAssessment: "Évaluation IA",
+    detectedLinks: "Liens Détectés",
+    analysis: "Analyse",
+    highRiskLink: "⚠️ Ouvrir à vos propres risques",
+    openCautiously: "Ouvrir (avec prudence)",
+    howItWorks: "🛡️ Comment Fonctionne Notre Moteur de Sécurité",
+    featuresSubtitle: "Protection multicouche alimentée par une IA de pointe, apprentissage adaptatif et analyse en temps réel",
+    realTimeAnalysisTitle: "Analyse en Temps Réel",
+    realTimeAnalysisDesc: "Détecte les mots d'urgence, les demandes de paiement, les modèles de liens suspects et les tentatives de collecte d'identifiants pendant que vous tapez.",
+    liveScanning: "Scan en direct",
+    noDelays: "Aucun délai",
+    aiInsights: "Insights Alimentés par IA",
+    aiInsightsDesc: "Les modèles avancés d'apprentissage automatique analysent le contexte et les modèles que les filtres traditionnels pourraient manquer.",
+    threatsTracked: "50+ menaces suivies",
+    autoCalibrated: "Auto-calibré",
+    privacyProtected: "Confidentialité Protégée",
+    privacyProtectedDesc: "Vos données restent sécurisées. L'analyse locale s'exécute dans votre navigateur, avec un traitement IA optionnel uniquement avec consentement.",
+    emails: "Emails",
+    pins: "PINs",
+    cards: "Cartes",
+    punycodeDetection: "Détection Punycode",
+    punycodeDetectionDesc: "Détecte les attaques d'homographes utilisant des caractères Unicode et l'usurpation de domaine",
+    personalizedAlerts: "Alertes Personnalisées",
+    personalizedAlertsDesc: "Modèles de détection personnalisés basés sur le contexte linguistique et industriel",
+    multiLanguage: "Multi-langue",
+    industryAware: "Conscient de l'industrie",
+    brandProtection: "Protection de Marque",
+    brandProtectionDesc: "Détecte les tentatives d'usurpation de marque et les variations de domaine suspectes",
+    typoDetection: "Détection de fautes de frappe",
+    similarityAnalysis: "Analyse de similarité",
+    doNotClick: "Ne cliquez pas sur les liens et ne partagez pas d'informations jusqu'à vérification indépendante.",
+    stayCautious: "Restez prudent et inspectez les liens avant de cliquer.",
+    selectLanguage: "Sélectionner la Langue",
+    english: "English",
+    spanish: "Español",
+    french: "Français",
+    hindi: "हिन्दी",
+    german: "Deutsch"
+  },
+  hi: {
+    appTitle: "फ़िशिंग शील्ड",
+    appSubtitle: "उन्नत सुरक्षा विश्लेषण",
+    pasteSample: "नमूना पेस्ट करें",
+    learn: "सीखें",
+    mainTitle: "उन्नत फ़िशिंग डिटेक्शन",
+    mainSubtitle: "हमारे बहु-परत सुरक्षा इंजन के साथ संदिग्ध संदेशों का विश्लेषण करें। रियल-टाइम जोखिम मूल्यांकन और AI-संचालित विश्लेषण प्राप्त करें।",
+    privacyFirst: "गोपनीयता पहले",
+    instantAnalysis: "तत्काल विश्लेषण",
+    aiPowered: "AI संचालित",
+    messageAnalysis: "संदेश विश्लेषण",
+    liveScan: "लाइव स्कैन",
+    placeholder: "अपना ईमेल, DM या SMS यहाँ पेस्ट करें…",
+    characters: "वर्ण",
+    analyze: "विश्लेषण करें (AI + ह्यूरिस्टिक्स)",
+    generateReply: "सुरक्षित उत्तर उत्पन्न करें",
+    clear: "साफ़ करें",
+    riskAssessment: "जोखिम मूल्यांकन",
+    unknown: "अज्ञात",
+    realTimeAnalysis: "उन्नत ह्यूरिस्टिक्स द्वारा संचालित रियल-टाइम सुरक्षा विश्लेषण",
+    highRisk: "🚨 उच्च जोखिम",
+    mediumRisk: "⚠️ मध्यम जोखिम",
+    looksSafe: "✅ सुरक्षित लगता है",
+    result: "ℹ️ परिणाम",
+    keySignals: "मुख्य संकेत (स्थानीय ह्यूरिस्टिक्स)",
+    noSignals: "कोई मजबूत स्थानीय फ़िशिंग संकेत नहीं।",
+    aiAssessment: "AI मूल्यांकन",
+    detectedLinks: "पता चले लिंक",
+    analysis: "विश्लेषण",
+    highRiskLink: "⚠️ अपने जोखिम पर खोलें",
+    openCautiously: "सावधानी से खोलें",
+    howItWorks: "🛡️ हमारा सुरक्षा इंजन कैसे काम करता है",
+    featuresSubtitle: "अत्याधुनिक AI, अनुकूली सीखने और रियल-टाइम विश्लेषण द्वारा संचालित बहु-परत सुरक्षा",
+    realTimeAnalysisTitle: "रियल-टाइम विश्लेषण",
+    realTimeAnalysisDesc: "जैसे ही आप टाइप करते हैं, तात्कालिकता शब्दों, भुगतान अनुरोधों, संदिग्ध लिंक पैटर्न और क्रेडेंशियल हार्वेस्टिंग प्रयासों का पता लगाता है।",
+    liveScanning: "लाइव स्कैनिंग",
+    noDelays: "कोई देरी नहीं",
+    aiInsights: "AI-संचालित अंतर्दृष्टि",
+    aiInsightsDesc: "उन्नत मशीन लर्निंग मॉडल संदर्भ और पैटर्न का विश्लेषण करते हैं जो पारंपरिक फिल्टर छूट सकते हैं।",
+    threatsTracked: "50+ खतरों का ट्रैक",
+    autoCalibrated: "ऑटो-कैलिब्रेटेड",
+    privacyProtected: "गोपनीयता संरक्षित",
+    privacyProtectedDesc: "आपका डेटा सुरक्षित रहता है। स्थानीय विश्लेषण आपके ब्राउज़र में चलता है, सहमति के साथ केवल वैकल्पिक AI प्रसंस्करण के साथ।",
+    emails: "ईमेल",
+    pins: "PIN",
+    cards: "कार्ड",
+    punycodeDetection: "पुनिकोड डिटेक्शन",
+    punycodeDetectionDesc: "यूनिकोड वर्णों और डोमेन स्पूफिंग का उपयोग करके होमोग्राफ हमलों का पता लगाता है",
+    personalizedAlerts: "व्यक्तिगत अलर्ट",
+    personalizedAlertsDesc: "भाषा और उद्योग संदर्भ के आधार पर अनुकूलित डिटेक्शन पैटर्न",
+    multiLanguage: "बहु-भाषा",
+    industryAware: "उद्योग-जागरूक",
+    brandProtection: "ब्रांड सुरक्षा",
+    brandProtectionDesc: "ब्रांड प्रतिरूपण प्रयासों और संदिग्ध डोमेन भिन्नताओं का पता लगाता है",
+    typoDetection: "टाइपो डिटेक्शन",
+    similarityAnalysis: "समानता विश्लेषण",
+    doNotClick: "स्वतंत्र रूप से सत्यापित होने तक लिंक पर क्लिक न करें या जानकारी साझा न करें।",
+    stayCautious: "सतर्क रहें और क्लिक करने से पहले लिंक का निरीक्षण करें।",
+    selectLanguage: "भाषा चुनें",
+    english: "English",
+    spanish: "Español",
+    french: "Français",
+    hindi: "हिन्दी",
+    german: "Deutsch"
+  },
+  de: {
+    appTitle: "PHISHING-SCHUTZ",
+    appSubtitle: "Erweiterte Sicherheitsanalyse",
+    pasteSample: "Beispiel Einfügen",
+    learn: "Lernen",
+    mainTitle: "Erweiterte Phishing-Erkennung",
+    mainSubtitle: "Analysieren Sie verdächtige Nachrichten mit unserem mehrschichtigen Sicherheitsmotor. Erhalten Sie Echtzeit-Risikobewertung und KI-gestützte Analyse.",
+    privacyFirst: "Datenschutz Zuerst",
+    instantAnalysis: "Sofortige Analyse",
+    aiPowered: "KI-gestützt",
+    messageAnalysis: "Nachrichtenanalyse",
+    liveScan: "Live-Scan",
+    placeholder: "Fügen Sie hier Ihre E-Mail, DM oder SMS ein…",
+    characters: "Zeichen",
+    analyze: "ANALYSIEREN (KI + Heuristiken)",
+    generateReply: "SICHERE ANTWORT GENERIEREN",
+    clear: "Löschen",
+    riskAssessment: "Risikobewertung",
+    unknown: "Unbekannt",
+    realTimeAnalysis: "Echtzeit-Sicherheitsanalyse mit erweiterten Heuristiken",
+    highRisk: "🚨 HOHES RISIKO",
+    mediumRisk: "⚠️ MITTLERES RISIKO",
+    looksSafe: "✅ Scheint Sicher",
+    result: "ℹ️ Ergebnis",
+    keySignals: "Hauptsignale (lokale Heuristiken)",
+    noSignals: "Keine starken lokalen Phishing-Signale.",
+    aiAssessment: "KI-Bewertung",
+    detectedLinks: "Erkannte Links",
+    analysis: "Analyse",
+    highRiskLink: "⚠️ Auf eigene Gefahr öffnen",
+    openCautiously: "Vorsichtig öffnen",
+    howItWorks: "🛡️ Wie Unser Sicherheitsmotor Funktioniert",
+    featuresSubtitle: "Mehrschichtiger Schutz mit modernster KI, adaptivem Lernen und Echtzeitanalyse",
+    realTimeAnalysisTitle: "Echtzeit-Analyse",
+    realTimeAnalysisDesc: "Erkennt Dringlichkeitswörter, Zahlungsanfragen, verdächtige Link-Muster und Versuche zur Anmeldedaten-Sammlung während Sie tippen.",
+    liveScanning: "Live-Scanning",
+    noDelays: "Keine Verzögerungen",
+    aiInsights: "KI-gestützte Erkenntnisse",
+    aiInsightsDesc: "Erweiterte Machine-Learning-Modelle analysieren Kontext und Muster, die traditionelle Filter übersehen könnten.",
+    threatsTracked: "50+ Bedrohungen verfolgt",
+    autoCalibrated: "Auto-kalibriert",
+    privacyProtected: "Datenschutz Geschützt",
+    privacyProtectedDesc: "Ihre Daten bleiben sicher. Die lokale Analyse läuft in Ihrem Browser, mit optionaler KI-Verarbeitung nur mit Zustimmung.",
+    emails: "E-Mails",
+    pins: "PINs",
+    cards: "Karten",
+    punycodeDetection: "Punycode-Erkennung",
+    punycodeDetectionDesc: "Erkennt Homograph-Angriffe mit Unicode-Zeichen und Domain-Spoofing",
+    personalizedAlerts: "Personalisierte Warnungen",
+    personalizedAlertsDesc: "Angepasste Erkennungsmuster basierend auf Sprach- und Branchenkontext",
+    multiLanguage: "Mehrsprachig",
+    industryAware: "Branchenbewusst",
+    brandProtection: "Markenschutz",
+    brandProtectionDesc: "Erkennt Marken-Impersonationsversuche und verdächtige Domain-Variationen",
+    typoDetection: "Tippfehler-Erkennung",
+    similarityAnalysis: "Ähnlichkeitsanalyse",
+    doNotClick: "Klicken Sie nicht auf Links oder teilen Sie Informationen, bis sie unabhängig verifiziert wurden.",
+    stayCautious: "Seien Sie vorsichtig und überprüfen Sie Links vor dem Klicken.",
+    selectLanguage: "Sprache Auswählen",
+    english: "English",
+    spanish: "Español",
+    french: "Français",
+    hindi: "हिन्दी",
+    german: "Deutsch",
+    russian: "Русский",
+  },
+  ru: {
+    appTitle: "АНТИ-ФИШИНГ ЩИТ",
+    appSubtitle: "Продвинутый Анализ Безопасности",
+    pasteSample: "Вставить Образец",
+    learn: "Изучить",
+    mainTitle: "Продвинутое Обнаружение Фишинга",
+    mainSubtitle: "Анализируйте подозрительные сообщения с помощью нашего многослойного движка безопасности. Получайте оценку риска в реальном времени и анализ на основе ИИ.",
+    privacyFirst: "Конфиденциальность Прежде Всего",
+    instantAnalysis: "Мгновенный Анализ",
+    aiPowered: "На Базе ИИ",
+    messageAnalysis: "Анализ Сообщения",
+    liveScan: "Живое сканирование",
+    placeholder: "Вставьте ваш email, DM или SMS сюда…",
+    characters: "символов",
+    analyze: "АНАЛИЗИРОВАТЬ (ИИ + Эвристика)",
+    generateReply: "СОЗДАТЬ БЕЗОПАСНЫЙ ОТВЕТ",
+    clear: "Очистить",
+    riskAssessment: "Оценка Риска",
+    unknown: "Неизвестно",
+    realTimeAnalysis: "Анализ безопасности в реальном времени на основе продвинутых эвристик",
+    highRisk: "🚨 ВЫСОКИЙ РИСК",
+    mediumRisk: "⚠️ СРЕДНИЙ РИСК",
+    looksSafe: "✅ Выглядит Безопасно",
+    result: "ℹ️ Результат",
+    keySignals: "Ключевые Сигналы (локальная эвристика)",
+    noSignals: "Нет сильных локальных сигналов фишинга.",
+    aiAssessment: "Оценка ИИ",
+    detectedLinks: "Обнаруженные Ссылки",
+    analysis: "Анализ",
+    highRiskLink: "⚠️ Открыть на свой страх и риск",
+    openCautiously: "Открыть (осторожно)",
+    howItWorks: "🛡️ Как Работает Наш Движок Безопасности",
+    featuresSubtitle: "Многослойная защита на основе передового ИИ, адаптивного обучения и анализа в реальном времени",
+    realTimeAnalysisTitle: "Анализ в Реальном Времени",
+    realTimeAnalysisDesc: "Обнаруживает слова срочности, запросы платежей, подозрительные паттерны ссылок и попытки сбора учетных данных во время ввода.",
+    liveScanning: "Живое сканирование",
+    noDelays: "Без задержек",
+    aiInsights: "Инсайты на Базе ИИ",
+    aiInsightsDesc: "Продвинутые модели машинного обучения анализируют контекст и паттерны, которые традиционные фильтры могут пропустить.",
+    threatsTracked: "50+ угроз отслеживается",
+    autoCalibrated: "Автоматически калибруется",
+    privacyProtected: "Защищено Конфиденциальностью",
+    privacyProtectedDesc: "Ваши данные остаются в безопасности. Локальный анализ работает в вашем браузере, с опциональной обработкой ИИ только с согласия.",
+    emails: "Электронные письма",
+    pins: "PIN-коды",
+    cards: "Карты",
+    punycodeDetection: "Обнаружение Punycode",
+    punycodeDetectionDesc: "Обнаруживает атаки гомографов с использованием Unicode символов и подделки доменов",
+    personalizedAlerts: "Персонализированные Оповещения",
+    personalizedAlertsDesc: "Настраиваемые паттерны обнаружения на основе языкового и отраслевого контекста",
+    multiLanguage: "Многоязычный",
+    industryAware: "Отраслевая осведомленность",
+    brandProtection: "Защита Бренда",
+    brandProtectionDesc: "Обнаруживает попытки подделки бренда и подозрительные вариации доменов",
+    typoDetection: "Обнаружение опечаток",
+    similarityAnalysis: "Анализ схожести",
+    doNotClick: "Не нажимайте на ссылки и не делитесь информацией до независимой проверки.",
+    stayCautious: "Будьте осторожны и проверяйте ссылки перед нажатием.",
+    selectLanguage: "Выберите Язык",
+    english: "English",
+    spanish: "Español",
+    french: "Français",
+    hindi: "हिन्दी",
+    german: "Deutsch",
+    russian: "Русский",
   }
 };
 
@@ -146,28 +582,146 @@ function getThreatHistory() {
   return JSON.parse(localStorage.getItem(THREAT_HISTORY_KEY) || '[]');
 }
 
+// === Language Management ===
+const LANGUAGE_KEY = "PHISHING_SHIELD_LANGUAGE";
+
+function getCurrentLanguage() {
+  return localStorage.getItem(LANGUAGE_KEY) || 'en';
+}
+
+function setCurrentLanguage(lang) {
+  localStorage.setItem(LANGUAGE_KEY, lang);
+  updateUI();
+}
+
+function getTranslation(key) {
+  const lang = getCurrentLanguage();
+  return UI_TRANSLATIONS[lang]?.[key] || UI_TRANSLATIONS['en'][key] || key;
+}
+
+function updateUI() {
+  const lang = getCurrentLanguage();
+  const t = UI_TRANSLATIONS[lang];
+  
+  // Update all elements with data-translate attribute
+  document.querySelectorAll('[data-translate]').forEach(element => {
+    const key = element.getAttribute('data-translate');
+    if (t[key]) {
+      if (element.tagName === 'INPUT' && element.type === 'text') {
+        element.placeholder = t[key];
+      } else {
+        element.textContent = t[key];
+      }
+    }
+  });
+  
+  // Update specific elements by ID
+  const updates = {
+    'app-title': t.appTitle,
+    'app-subtitle': t.appSubtitle,
+    'main-title': t.mainTitle,
+    'main-subtitle': t.mainSubtitle,
+    'privacy-first': t.privacyFirst,
+    'instant-analysis': t.instantAnalysis,
+    'ai-powered': t.aiPowered,
+    'message-analysis': t.messageAnalysis,
+    'live-scan': t.liveScan,
+    'message-placeholder': t.placeholder,
+    'analyze-btn': t.analyze,
+    'reply-btn': t.generateReply,
+    'clear-btn': t.clear,
+    'risk-assessment': t.riskAssessment,
+    'real-time-desc': t.realTimeAnalysis,
+    'how-it-works': t.howItWorks,
+    'features-subtitle': t.featuresSubtitle,
+    'real-time-title': t.realTimeAnalysisTitle,
+    'real-time-desc-feature': t.realTimeAnalysisDesc,
+    'live-scanning': t.liveScanning,
+    'no-delays': t.noDelays,
+    'ai-insights': t.aiInsights,
+    'ai-insights-desc': t.aiInsightsDesc,
+    'threats-tracked': t.threatsTracked,
+    'auto-calibrated': t.autoCalibrated,
+    'privacy-protected': t.privacyProtected,
+    'privacy-protected-desc': t.privacyProtectedDesc,
+    'emails': t.emails,
+    'pins': t.pins,
+    'cards': t.cards,
+    'punycode-detection': t.punycodeDetection,
+    'punycode-detection-desc': t.punycodeDetectionDesc,
+    'personalized-alerts': t.personalizedAlerts,
+    'personalized-alerts-desc': t.personalizedAlertsDesc,
+    'multi-language': t.multiLanguage,
+    'industry-aware': t.industryAware,
+    'brand-protection': t.brandProtection,
+    'brand-protection-desc': t.brandProtectionDesc,
+    'typo-detection': t.typoDetection,
+    'similarity-analysis': t.similarityAnalysis
+  };
+  
+  for (const [id, text] of Object.entries(updates)) {
+    const element = document.getElementById(id);
+    if (element) {
+      element.textContent = text;
+    }
+  }
+  
+  // Update language selector
+  const langSelector = document.getElementById('language-selector');
+  if (langSelector) {
+    langSelector.value = lang;
+  }
+}
+
 // Language detection function
 function detectLanguage(text) {
+  // First check for non-English characters
+  const hindiChars = /[\u0900-\u097F]/;
+  const spanishChars = /[ñáéíóúü]/i;
+  const frenchChars = /[àâäéèêëïîôöùûüÿç]/i;
+  const germanChars = /[äöüß]/i;
+  
+  if (hindiChars.test(text)) return 'hi';
+  if (spanishChars.test(text)) return 'es';
+  if (frenchChars.test(text)) return 'fr';
+  if (germanChars.test(text)) return 'de';
+  
+  // If no special characters, use word-based detection with better scoring
   const words = text.toLowerCase().split(/\s+/);
   const languageScores = {};
   
   for (const [lang, patterns] of Object.entries(LANGUAGE_PATTERNS)) {
     let score = 0;
     for (const word of words) {
-      if (patterns.urgencyWords.includes(word) || 
-          patterns.moneyWords.includes(word) || 
-          patterns.greetings.includes(word)) {
-        score++;
+      if (patterns.urgencyWords.includes(word)) {
+        score += 3; // Higher weight for urgency words
+      }
+      if (patterns.moneyWords.includes(word)) {
+        score += 2; // Medium weight for money words
+      }
+      if (patterns.greetings.includes(word)) {
+        score += 1; // Lower weight for greetings
       }
     }
     languageScores[lang] = score;
   }
   
+  // Find the language with highest score
   const detectedLang = Object.keys(languageScores).reduce((a, b) => 
     languageScores[a] > languageScores[b] ? a : b
   );
   
-  return languageScores[detectedLang] > 0 ? detectedLang : 'en';
+  // Only return non-English if there's a significant score difference
+  // This prevents English from being misidentified as other languages
+  const englishScore = languageScores['en'] || 0;
+  const maxScore = languageScores[detectedLang] || 0;
+  
+  // If English has a reasonable score or the difference is small, default to English
+  if (englishScore >= 2 || maxScore - englishScore < 3) {
+    return 'en';
+  }
+  
+  return maxScore > 0 ? detectedLang : 'en';
 }
 
 // Generate personalized alerts based on context
@@ -460,17 +1014,23 @@ function extractUrls(text) {
       // Filter out common false positives
       const hostname = url.replace(/^https?:\/\//, '').split('/')[0].toLowerCase();
       
-      // Skip if it looks like a name (firstname.lastname pattern)
-      if (/^[a-z]+\.[a-z]+$/.test(hostname) && hostname.length < 15) {
+      // Skip if it looks like a name (firstname.lastname pattern) but NOT if it has a scheme
+      const hasScheme = /^https?:\/\//i.test(url);
+      if (/^[a-z]+\.[a-z]+$/.test(hostname) && hostname.length < 15 && !hasScheme) {
         return false;
       }
       
-      // Skip if it's a common non-domain pattern
+      // Skip if it's a common non-domain pattern but NOT if it has a scheme
       const skipPatterns = [
         /^[a-z]+\.[a-z]+$/, // simple name patterns
         /^\d+\.\d+/, // IP-like patterns
         /^[a-z]+\.(com|org|net|edu|gov)$/i // single word domains (likely false positives)
       ];
+      
+      // If it has a scheme (https:// or http://), always include it
+      if (hasScheme) {
+        return true;
+      }
       
       return !skipPatterns.some(pattern => pattern.test(hostname));
     })
@@ -833,7 +1393,15 @@ function scoreHeuristics(text) {
 function setRisk(score, level, riskFill, riskLabel) {
   const clamped = Math.max(0, Math.min(100, Math.round(score)));
   riskFill.style.width = `${clamped}%`;
-  riskLabel.textContent = `${level} (${clamped})`;
+  
+  // Translate level if it's a standard level
+  let translatedLevel = level;
+  if (level === "High") translatedLevel = getTranslation("highRisk").replace("🚨 ", "");
+  else if (level === "Medium") translatedLevel = getTranslation("mediumRisk").replace("⚠️ ", "");
+  else if (level === "Low") translatedLevel = getTranslation("looksSafe").replace("✅ ", "");
+  else if (level === "Unknown") translatedLevel = getTranslation("unknown");
+  
+  riskLabel.textContent = `${translatedLevel} (${clamped})`;
   riskLabel.className = "text-sm px-2 py-1 rounded-lg";
   // reset background classes by reassigning className above then adding one
   if (level === "High") riskLabel.classList.add("bg-red-600/30");
@@ -1070,10 +1638,10 @@ function renderAnalysisCard({ finalLevel, finalReason, heur, ai, finalScore, not
 
   const title = createEl("p", { className: "text-2xl font-bold mb-1" });
   title.textContent =
-    finalLevel === "High" ? "🚨 HIGH RISK"
-    : finalLevel === "Medium" ? "⚠️ MEDIUM RISK"
-    : finalLevel === "Low" ? "✅ Looks Safe"
-    : "ℹ️ Result";
+    finalLevel === "High" ? getTranslation("highRisk")
+    : finalLevel === "Medium" ? getTranslation("mediumRisk")
+    : finalLevel === "Low" ? getTranslation("looksSafe")
+    : getTranslation("result");
 
   const reason = createEl("p", { className: "mt-1 text-base" });
   // Show simplified reason - AI details will be in dedicated section
@@ -1113,7 +1681,7 @@ function renderAnalysisCard({ finalLevel, finalReason, heur, ai, finalScore, not
 
   const hTitle = createEl("p", {
     className: "mt-4 font-semibold",
-    text: "Key Signals (local heuristics)",
+    text: getTranslation("keySignals"),
   });
   wrapper.appendChild(hTitle);
 
@@ -1129,7 +1697,7 @@ function renderAnalysisCard({ finalLevel, finalReason, heur, ai, finalScore, not
     wrapper.appendChild(ul);
   } else {
     wrapper.appendChild(
-      createEl("p", { className: "text-sm", text: "No strong local phishing signals." })
+      createEl("p", { className: "text-sm", text: getTranslation("noSignals") })
     );
   }
 
@@ -1138,7 +1706,7 @@ function renderAnalysisCard({ finalLevel, finalReason, heur, ai, finalScore, not
     const aiSep = createEl("hr", { attrs: { role: "presentation" }, className: "mt-4 border-slate-600" });
     const aiTitle = createEl("p", {
       className: "mt-4 font-bold text-blue-400 text-3xl mb-4 leading-tight",
-      text: "AI Assessment",
+      text: getTranslation("aiAssessment"),
     });
     
     const aiReasoning = createEl("div", { className: "mt-2 text-lg text-white font-medium" });
@@ -1313,8 +1881,8 @@ function renderAnalysisCard({ finalLevel, finalReason, heur, ai, finalScore, not
   const tip = createEl("p", { className: "mt-4 text-xs font-semibold" });
   tip.textContent =
     finalLevel === "High" || finalLevel === "Medium"
-      ? "Do not click links or share information until independently verified."
-      : "Stay cautious and inspect links before clicking.";
+      ? getTranslation("doNotClick")
+      : getTranslation("stayCautious");
 
   wrapper.appendChild(tip);
 
@@ -1386,6 +1954,9 @@ async function runAnalysis(messageInput, resultContainer, loadingIndicator, anal
 
 // === Events ===
 document.addEventListener("DOMContentLoaded", () => {
+  // Initialize UI with current language
+  updateUI();
+  
   // === DOM Refs ===
   const analyzeButton = document.getElementById("analyze-button");
   const replyButton = document.getElementById("reply-button");
@@ -1402,7 +1973,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const charCount = document.getElementById("char-count");
 
   const sampleBtn = document.getElementById("sample-btn");
+  const languageSelector = document.getElementById("language-selector");
 
+  // Language selector event listener
+  if (languageSelector) {
+    languageSelector.addEventListener("change", (e) => {
+      setCurrentLanguage(e.target.value);
+    });
+  }
 
   const consentBtn = document.getElementById("consent-button");
   const consentModal = document.getElementById("consent-modal");
@@ -1475,8 +2053,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   clearButton.addEventListener("click", () => {
     messageInput.value = "";
-    charCount.textContent = "0 characters";
-    setRisk(0, "Unknown", riskFill, riskLabel);
+    const t = UI_TRANSLATIONS[getCurrentLanguage()];
+    charCount.textContent = `0 ${t.characters}`;
+    setRisk(0, getTranslation("unknown"), riskFill, riskLabel);
     linksPanel.classList.add("hidden");
     resultContainer.classList.add("hidden");
     analysisResult.innerHTML = "";
@@ -1484,7 +2063,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   messageInput.addEventListener("input", () => {
     const text = messageInput.value;
-    charCount.textContent = `${text.length} character${text.length === 1 ? "" : "s"}`;
+    const t = UI_TRANSLATIONS[getCurrentLanguage()];
+    charCount.textContent = `${text.length} ${t.characters}`;
     if (!liveScanToggle.checked) return;
 
     if (!text.trim()) {
@@ -1518,9 +2098,41 @@ document.addEventListener("DOMContentLoaded", () => {
   // Sample
   if (sampleBtn) {
     sampleBtn.addEventListener("click", async () => {
-      const sample = `FINAL NOTICE: Your PayPal account will be SUSPENDED in 24 HOURS.
+      const currentLang = getCurrentLanguage();
+      const samples = {
+        en: `FINAL NOTICE: Your PayPal account will be SUSPENDED in 24 HOURS.
 Click https://paypl.com/login to verify your password and 2FA NOW.
-Failure to act will result in permanent closure and loss of funds.`;
+Failure to act will result in permanent closure and loss of funds.
+
+Also check: xn--paypal-abc.com for urgent verification.`,
+        es: `AVISO FINAL: Su cuenta de PayPal será SUSPENDIDA en 24 HORAS.
+Haga clic en https://paypl.com/login para verificar su contraseña y 2FA AHORA.
+El incumplimiento resultará en el cierre permanente y la pérdida de fondos.
+
+También revise: xn--paypal-abc.com para verificación urgente.`,
+        fr: `AVIS FINAL: Votre compte PayPal sera SUSPENDU dans 24 HEURES.
+Cliquez sur https://paypl.com/login pour vérifier votre mot de passe et 2FA MAINTENANT.
+Le non-respect entraînera une fermeture permanente et une perte de fonds.
+
+Vérifiez également: xn--paypal-abc.com pour une vérification urgente.`,
+        hi: `अंतिम सूचना: आपका PayPal खाता 24 घंटों में निलंबित हो जाएगा।
+अपना पासवर्ड और 2FA सत्यापित करने के लिए अभी https://paypl.com/login पर क्लिक करें।
+कार्य न करने से स्थायी बंदी और धन की हानि होगी।
+
+तत्काल सत्यापन के लिए यह भी देखें: xn--paypal-abc.com।`,
+        de: `LETZTE WARNUNG: Ihr PayPal-Konto wird in 24 STUNDEN GESPERRT.
+Klicken Sie auf https://paypl.com/login, um Ihr Passwort und 2FA JETZT zu überprüfen.
+Nichtbeachtung führt zu dauerhafter Schließung und Verlust von Geldern.
+
+Überprüfen Sie auch: xn--paypal-abc.com für dringende Überprüfung.`,
+        ru: `ОКОНЧАТЕЛЬНОЕ УВЕДОМЛЕНИЕ: Ваш аккаунт PayPal будет ЗАБЛОКИРОВАН через 24 ЧАСА.
+Нажмите https://paypl.com/login для проверки пароля и 2FA СЕЙЧАС.
+Невыполнение приведет к постоянному закрытию и потере средств.
+
+Также проверьте: xn--paypal-abc.com для срочной проверки.`
+      };
+      
+      const sample = samples[currentLang] || samples.en;
       messageInput.value = sample;
       messageInput.dispatchEvent(new Event("input"));
     });
