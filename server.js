@@ -4,8 +4,7 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 const path = require('path');
 require('dotenv').config();
 
-// Punycode detection utilities
-const punycode = require('punycode');
+// Punycode detection utilities - using built-in URL API instead of deprecated punycode module
 
 // Known legitimate domains for comparison
 const LEGITIMATE_DOMAINS = [
@@ -88,8 +87,12 @@ function detectHomographAttack(domain) {
       results.warnings.push('🚨 Punycode domain detected - may contain non-ASCII characters');
       
       try {
-        const decoded = punycode.decode(domain.replace('xn--', ''));
-        results.warnings.push(`Decoded Punycode: ${decoded}`);
+        // Use URL constructor to decode punycode
+        const url = new URL(`http://${domain}`);
+        const decoded = url.hostname;
+        if (decoded !== domain) {
+          results.warnings.push(`Decoded Punycode: ${decoded}`);
+        }
       } catch (e) {
         results.warnings.push('Could not decode Punycode');
       }
@@ -408,13 +411,19 @@ app.post('/api/analyze', async (req, res) => {
     const domainRegex = /(?:https?:\/\/)?(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}(?:\/[^\s]*)?/gi;
     const domains = (message.match(domainRegex) || [])
       .filter(url => {
-        // Filter out common false positives
-        const hostname = url.replace(/^https?:\/\//, '').split('/')[0].toLowerCase();
-        
-        // Skip if it looks like a name (firstname.lastname pattern)
-        if (/^[a-z]+\.[a-z]+$/.test(hostname) && hostname.length < 15) {
-          return false;
+      // Filter out common false positives
+      const hostname = url.replace(/^https?:\/\//, '').split('/')[0].toLowerCase();
+      
+      // Skip if it looks like a name (firstname.lastname pattern) but allow brand typos
+      if (/^[a-z]+\.[a-z]+$/.test(hostname) && hostname.length < 15) {
+        // Allow common TLDs even if they look like names (for brand typos like paypel.com)
+        const commonTlds = ['com', 'org', 'net', 'edu', 'gov', 'co', 'io', 'me', 'us'];
+        const tld = hostname.split('.').pop();
+        if (commonTlds.includes(tld)) {
+          return true; // Allow domains with common TLDs
         }
+        return false;
+      }
         
         // Skip if it's a common non-domain pattern
         const skipPatterns = [

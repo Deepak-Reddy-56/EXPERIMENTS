@@ -1016,7 +1016,14 @@ function extractUrls(text) {
       
       // Skip if it looks like a name (firstname.lastname pattern) but NOT if it has a scheme
       const hasScheme = /^https?:\/\//i.test(url);
+      // Don't filter out domains that might be brand typos (like paypel.com, microsft.com)
       if (/^[a-z]+\.[a-z]+$/.test(hostname) && hostname.length < 15 && !hasScheme) {
+        // Allow common TLDs even if they look like names
+        const commonTlds = ['com', 'org', 'net', 'edu', 'gov', 'co', 'io', 'me', 'us'];
+        const tld = hostname.split('.').pop();
+        if (commonTlds.includes(tld)) {
+          return true; // Allow domains with common TLDs
+        }
         return false;
       }
       
