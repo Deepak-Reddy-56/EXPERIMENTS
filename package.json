@@ -1,0 +1,27 @@
+{
+  "name": "ieee-hackathon",
+  "version": "1.0.0",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "deploy": "vercel --prod"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Deepak-Reddy-56/IEEE-HACKATHON.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Deepak-Reddy-56/IEEE-HACKATHON/issues"
+  },
+  "homepage": "https://github.com/Deepak-Reddy-56/IEEE-HACKATHON#readme",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2"
+  }
+}
