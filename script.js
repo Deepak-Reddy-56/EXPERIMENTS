@@ -1,36 +1,4 @@
 // === Config ===
-const MODEL_ID = "gemini-2.5-flash-preview-05-20";
-const BASE_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_ID}:generateContent`;
-
-// === DOM Refs ===
-const analyzeButton = document.getElementById("analyze-button");
-const replyButton = document.getElementById("reply-button");
-const clearButton = document.getElementById("clear-button");
-const messageInput = document.getElementById("message-input");
-const resultContainer = document.getElementById("result-container");
-const loadingIndicator = document.getElementById("loading-indicator");
-const analysisResult = document.getElementById("analysis-result");
-const riskFill = document.getElementById("risk-fill");
-const riskLabel = document.getElementById("risk-label");
-const linksPanel = document.getElementById("links-panel");
-const linksList = document.getElementById("links-list");
-const liveScanToggle = document.getElementById("live-scan-toggle");
-const charCount = document.getElementById("char-count");
-
-const settingsBtn = document.getElementById("settings-btn");
-const settingsModal = document.getElementById("settings-modal");
-const closeSettings = document.getElementById("close-settings");
-const saveSettings = document.getElementById("save-settings");
-const apiKeyInput = document.getElementById("api-key");
-const sampleBtn = document.getElementById("sample-btn");
-
-const consentBtn = document.getElementById("consent-button");
-const consentModal = document.getElementById("consent-modal");
-const maskedPreview = document.getElementById("masked-preview");
-const consentCheckbox = document.getElementById("consent-checkbox");
-const sendConsentBtn = document.getElementById("send-consent-btn");
-const cancelConsent = document.getElementById("cancel-consent");
-const closeConsent = document.getElementById("close-consent-btn");
 
 // === Local Storage Keys ===
 const LS_KEY = "PHISHING_SHIELD_GEMINI_KEY";
@@ -222,7 +190,7 @@ function scoreHeuristics(text) {
 
 
 // === UI: Risk Meter & Labels ===
-function setRisk(score, level) {
+function setRisk(score, level, riskFill, riskLabel) {
   const clamped = Math.max(0, Math.min(100, Math.round(score)));
   riskFill.style.width = `${clamped}%`;
   riskLabel.textContent = `${level} (${clamped})`;
@@ -234,124 +202,59 @@ function setRisk(score, level) {
   else riskLabel.classList.add("bg-slate-800");
 }
 
-// === Gemini Calls (optional) ===
-function getApiKey() {
-  // Prefer local storage, then settings input, then (fallback) the embedded demo key.
-  const stored = localStorage.getItem(LS_KEY);
-  if (stored && stored.trim()) return stored.trim();
-  const inputVal = apiKeyInput?.value?.trim();
-  if (inputVal) return inputVal;
-  // No fallback key to avoid exposing secrets; require user-provided key
-  return null;
-}
+// === Server API Calls ===
 
 async function analyzeWithGemini(message) {
-  const apiKey = getApiKey();
-  if (!apiKey) return null; // no AI if key not set
-
-  const systemPrompt =
-    "You are a cybersecurity assistant. The user has received a suspicious or potentially phishing message. Analyze the message for phishing indicators and provide a concise assessment. Return JSON as {\"riskLevel\":\"High|Medium|Low\",\"reasoning\":\"Concise explanation (5-6 lines max)\",\"officialWebsite\":\"official URL if impersonating known brand\"}. For the reasoning: Keep it brief and structured. Use bullet points if listing multiple issues. Focus on the most critical threats. For officialWebsite: If the message impersonates a known brand (PayPal, Microsoft, Amazon, etc.), provide the official website URL. If no specific brand is being impersonated, use null. Examples: 'https://www.paypal.com', 'https://www.microsoft.com', 'https://www.amazon.com'.";
-
-  const payload = {
-    systemInstruction: { role: "system", parts: [{ text: systemPrompt }] },
-    contents: [
-      {
-        role: "user",
-        parts: [
-          {
-            text:
-              "Analyze this message for phishing risk. " +
-              "Return JSON as {\"riskLevel\":\"High|Medium|Low\",\"reasoning\":\"Concise explanation (5-6 lines max)\",\"officialWebsite\":\"official URL if impersonating known brand\"}.\n\n" +
-              "Message:\n" + message,
-          },
-        ],
-      },
-    ],
-    generationConfig: {
-      temperature: 0.2,
-      responseMimeType: "application/json",
-    },
-  };
-
-  const res = await fetchWithBackoff(
-    `${BASE_URL}?key=${encodeURIComponent(apiKey)}`,
-    {
+  try {
+    const res = await fetchWithBackoff('/api/analyze', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ message }),
+    });
+
+    const data = await res.json();
+    
+    if (data.error) {
+      console.error('Server error:', data.error);
+      return null;
     }
-  );
 
-  const data = await res.json();
-  const jsonText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!jsonText) return null;
-
-  try {
-    const parsed = JSON.parse(jsonText);
-    if (typeof parsed?.riskLevel === "string" && typeof parsed?.reasoning === "string") {
+    if (typeof data?.riskLevel === "string" && typeof data?.reasoning === "string") {
       return { 
-        riskLevel: parsed.riskLevel, 
-        reasoning: parsed.reasoning,
-        officialWebsite: parsed.officialWebsite || null
+        riskLevel: data.riskLevel, 
+        reasoning: data.reasoning,
+        officialWebsite: data.officialWebsite || null
       };
     }
-  } catch (_) {
-    // fall through
+  } catch (error) {
+    console.error('Error calling analyze API:', error);
   }
   return null;
 }
 
 async function generateSafeReply(message) {
-  const apiKey = getApiKey();
   const fallback =
     "Thanks for reaching out. I can't verify this request or the link provided, so I won't be sharing any personal information. Please contact me through an official channel I can independently verify.";
 
-  if (!apiKey) return fallback;
-
-  const payload = {
-    contents: [
-      {
-        role: "user",
-        parts: [
-          {
-            text:
-`You are a cybersecurity assistant.
-
-Return STRICT JSON with these keys:
-- risk level: "Low" | "Medium" | "High"
-- analysis: short explanation (1–3 sentences)
-- safe reply: a single short paragraph I can send back
-
-Input:
-"${message}"`,
-          },
-        ],
-      },
-    ],
-    generationConfig: {
-      temperature: 0.3,
-      responseMimeType: "application/json",
-    },
-  };
-
-  const res = await fetchWithBackoff(
-    `${BASE_URL}?key=${encodeURIComponent(apiKey)}`,
-    {
+  try {
+    const res = await fetchWithBackoff('/api/reply', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ message }),
+    });
+
+    const data = await res.json();
+    
+    if (data.error) {
+      console.error('Server error:', data.error);
+      return fallback;
     }
-  );
 
-  const data = await res.json();
-  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!text) return fallback;
-
-  try {
-    const obj = JSON.parse(text);
-    const reply = obj?.["safe reply"];
+    const reply = data?.["safe reply"];
     if (reply && typeof reply === "string") return reply;
-  } catch (_) {}
+  } catch (error) {
+    console.error('Error calling reply API:', error);
+  }
   return fallback;
 }
 
@@ -399,14 +302,15 @@ function maskSensitiveData(text) {
     return "[REDACTED ACCOUNT]";
   });
 
-  // 6) Addresses (number + street or keywords)
-  // Replace the old addressRegex with this one:
-const addressRegex = /\b\d{1,5}[A-Za-z]?\s+(?:[A-Za-z0-9#]+\s?){1,6}(Street|St\.|Road|Rd\.|Avenue|Ave\.|Boulevard|Blvd\.|Lane|Ln\.|Drive|Dr\.|Suite|Ste\.|Apt|Apartment|Floor|Fl)\b[^,\n]*(?:,\s*[A-Za-z\s]+)?/gi;
+  // 6) Addresses - Single comprehensive pattern to catch complete addresses
+  // This pattern captures complete addresses including street number, name, type, apartment/suite, city, state, and ZIP
+  const addressRegex = /\b\d{1,5}[A-Za-z]?\s+(?:[A-Za-z0-9#]+\s?){1,6}(?:Street|St\.|Road|Rd\.|Avenue|Ave\.|Boulevard|Blvd\.|Lane|Ln\.|Drive|Dr\.|Way|Place|Pl\.|Circle|Cir\.|Court|Ct\.|Crescent|Cres\.|Close|Cl\.|Terrace|Tce\.|Grove|Gr\.|Gardens|Gdns\.|Square|Sq\.|Heights|Hts\.|Manor|Mews|Park|Pk\.|Rise|View|Vale|Walk|Wood|Wynd)(?:\s*,\s*(?:Suite|Ste|Apt|Apartment|Unit|Floor|Fl)\s*[A-Za-z0-9#\s]*)?(?:\s*,\s*[A-Za-z\s]+,\s*[A-Z]{2}\s*\d{5}(?:-\d{4})?)?/gi;
 
   masked = masked.replace(addressRegex, (m) => {
     report.addresses++;
     return "[REDACTED ADDRESS]";
   });
+
 
   // 7) "Name: John Doe" style explicit labels
   const nameLabelRegex = /\b(Name|Full Name|Your Name)\s*[:\-]\s*([A-Z][a-z]+(?:\s[A-Z][a-z]+)*)/g;
@@ -426,7 +330,7 @@ const addressRegex = /\b\d{1,5}[A-Za-z]?\s+(?:[A-Za-z0-9#]+\s?){1,6}(Street|St\.
 }
 
 // === Rendering ===
-function renderLinks(findings, riskScore = 0) {
+function renderLinks(findings, riskScore = 0, linksList, linksPanel) {
   linksList.innerHTML = "";
   if (!findings.length) {
     linksPanel.classList.add("hidden");
@@ -513,7 +417,7 @@ function renderLinks(findings, riskScore = 0) {
   }
 }
 
-function renderAnalysisCard({ finalLevel, finalReason, heur, ai, note }) {
+function renderAnalysisCard({ finalLevel, finalReason, heur, ai, note }, analysisResult) {
   analysisResult.className = "y2k-result"; // reset
   if (finalLevel === "High") analysisResult.classList.add("phishing");
   else if (finalLevel === "Medium") analysisResult.classList.add("medium");
@@ -655,7 +559,7 @@ function renderAnalysisCard({ finalLevel, finalReason, heur, ai, note }) {
 }
 
 // === Pipeline ===
-async function runAnalysis() {
+async function runAnalysis(messageInput, resultContainer, loadingIndicator, analysisResult, riskFill, riskLabel, linksList, linksPanel) {
   const text = messageInput.value.trim();
   if (!text) return;
 
@@ -665,8 +569,8 @@ async function runAnalysis() {
   analysisResult.className = "y2k-result";
 
   const heur = scoreHeuristics(text);
-  setRisk(heur.score, heur.level);
-  renderLinks(heur.linkFindings, heur.score);
+  setRisk(heur.score, heur.level, riskFill, riskLabel);
+  renderLinks(heur.linkFindings, heur.score, linksList, linksPanel);
 
   let ai = null;
   try {
@@ -685,204 +589,239 @@ async function runAnalysis() {
     finalReason = `Local score ${heur.score}/100. ${ai.reasoning}`;
   }
 
-  renderAnalysisCard({ finalLevel, finalReason, heur, ai });
+  renderAnalysisCard({ finalLevel, finalReason, heur, ai }, analysisResult);
 }
 
 // === Events ===
-analyzeButton.addEventListener("click", () => {
-  const text = messageInput.value.trim();
-  if (!text) {
-    alert("Please paste a message to analyze.");
-    return;
-  }
-  const { masked } = maskSensitiveData(text);
-  maskedPreview.textContent = masked || "—";
-  consentCheckbox.checked = false;
-  sendConsentBtn.disabled = true;
-  consentModal.showModal();
-});
+document.addEventListener("DOMContentLoaded", () => {
+  // === DOM Refs ===
+  const analyzeButton = document.getElementById("analyze-button");
+  const replyButton = document.getElementById("reply-button");
+  const clearButton = document.getElementById("clear-button");
+  const messageInput = document.getElementById("message-input");
+  const resultContainer = document.getElementById("result-container");
+  const loadingIndicator = document.getElementById("loading-indicator");
+  const analysisResult = document.getElementById("analysis-result");
+  const riskFill = document.getElementById("risk-fill");
+  const riskLabel = document.getElementById("risk-label");
+  const linksPanel = document.getElementById("links-panel");
+  const linksList = document.getElementById("links-list");
+  const liveScanToggle = document.getElementById("live-scan-toggle");
+  const charCount = document.getElementById("char-count");
+
+  const settingsBtn = document.getElementById("settings-btn");
+  const settingsModal = document.getElementById("settings-modal");
+  const closeSettings = document.getElementById("close-settings");
+  const saveSettings = document.getElementById("save-settings");
+  const apiKeyInput = document.getElementById("api-key");
+  const sampleBtn = document.getElementById("sample-btn");
+
+  const consentBtn = document.getElementById("consent-button");
+  const consentModal = document.getElementById("consent-modal");
+  const maskedPreview = document.getElementById("masked-preview");
+  const consentCheckbox = document.getElementById("consent-checkbox");
+  const sendConsentBtn = document.getElementById("send-consent-btn");
+  const cancelConsent = document.getElementById("cancel-consent");
+  const closeConsent = document.getElementById("close-consent-btn");
+
+  analyzeButton.addEventListener("click", () => {
+    const text = messageInput.value.trim();
+    if (!text) {
+      alert("Please paste a message to analyze.");
+      return;
+    }
+    const { masked } = maskSensitiveData(text);
+    maskedPreview.textContent = masked || "—";
+    consentCheckbox.checked = false;
+    sendConsentBtn.disabled = true;
+    consentModal.showModal();
+  });
 
 
-replyButton.addEventListener("click", async () => {
-  const text = messageInput.value.trim();
-  if (!text) return;
+  replyButton.addEventListener("click", async () => {
+    const text = messageInput.value.trim();
+    if (!text) return;
 
-  resultContainer.classList.remove("hidden");
-  loadingIndicator.style.display = "flex";
-  analysisResult.innerHTML = "";
-  analysisResult.className = "y2k-result";
-
-  try {
-    const replyText = await generateSafeReply(text);
-    loadingIndicator.style.display = "none";
-
-    analysisResult.classList.add("reply");
-    const title = createEl("p", {
-      className: "text-2xl font-bold mb-2",
-      text: "✨ Suggested Safe Reply ✨",
-    });
-    const body = createEl("p", { className: "text-base text-white font-medium" });
-    body.textContent = replyText;
-
-    const copyBtn = createEl("button", {
-      className: "y2k-button-secondary mt-4",
-      text: "Copy",
-    });
-    copyBtn.addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(replyText);
-        copyBtn.textContent = "Copied!";
-      } catch {
-        copyBtn.textContent = "Copy failed";
-      }
-      setTimeout(() => (copyBtn.textContent = "Copy"), 1200);
-    });
-
+    resultContainer.classList.remove("hidden");
+    loadingIndicator.style.display = "flex";
     analysisResult.innerHTML = "";
-    analysisResult.appendChild(title);
-    analysisResult.appendChild(body);
-    analysisResult.appendChild(copyBtn);
-    analysisResult.style.display = "block";
-  } catch (e) {
-    loadingIndicator.style.display = "none";
-    analysisResult.classList.add("phishing");
-    analysisResult.textContent = "Error generating reply.";
-  }
-});
+    analysisResult.className = "y2k-result";
 
-clearButton.addEventListener("click", () => {
-  messageInput.value = "";
-  charCount.textContent = "0 characters";
-  setRisk(0, "Unknown");
-  linksPanel.classList.add("hidden");
-  resultContainer.classList.add("hidden");
-  analysisResult.innerHTML = "";
-});
+    try {
+      const replyText = await generateSafeReply(text);
+      loadingIndicator.style.display = "none";
 
-messageInput.addEventListener("input", () => {
-  const text = messageInput.value;
-  charCount.textContent = `${text.length} character${text.length === 1 ? "" : "s"}`;
-  if (!liveScanToggle.checked) return;
+      analysisResult.classList.add("reply");
+      const title = createEl("p", {
+        className: "text-2xl font-bold mb-2",
+        text: "✨ Suggested Safe Reply ✨",
+      });
+      const body = createEl("p", { className: "text-base text-white font-medium" });
+      body.textContent = replyText;
 
-  if (!text.trim()) {
-    setRisk(0, "Unknown");
+      const copyBtn = createEl("button", {
+        className: "y2k-button-secondary mt-4",
+        text: "Copy",
+      });
+      copyBtn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(replyText);
+          copyBtn.textContent = "Copied!";
+        } catch {
+          copyBtn.textContent = "Copy failed";
+        }
+        setTimeout(() => (copyBtn.textContent = "Copy"), 1200);
+      });
+
+      analysisResult.innerHTML = "";
+      analysisResult.appendChild(title);
+      analysisResult.appendChild(body);
+      analysisResult.appendChild(copyBtn);
+      analysisResult.style.display = "block";
+    } catch (e) {
+      loadingIndicator.style.display = "none";
+      analysisResult.classList.add("phishing");
+      analysisResult.textContent = "Error generating reply.";
+    }
+  });
+
+  clearButton.addEventListener("click", () => {
+    messageInput.value = "";
+    charCount.textContent = "0 characters";
+    setRisk(0, "Unknown", riskFill, riskLabel);
     linksPanel.classList.add("hidden");
     resultContainer.classList.add("hidden");
-    return;
-  }
-
-  const heur = scoreHeuristics(text);
-  setRisk(heur.score, heur.level);
-  renderLinks(heur.linkFindings, heur.score);
-
-  resultContainer.classList.remove("hidden");
-  loadingIndicator.style.display = "none";
-  renderAnalysisCard({
-    finalLevel: heur.level,
-    finalReason: `Local score ${heur.score}/100.`,
-    heur,
-    ai: null,
+    analysisResult.innerHTML = "";
   });
-});
 
-// Settings modal
-settingsBtn.addEventListener("click", () => {
-  apiKeyInput.value = localStorage.getItem(LS_KEY);
-  settingsModal.showModal();
-});
-closeSettings.addEventListener("click", (e) => {
-  e.preventDefault();
-  settingsModal.close();
-});
-saveSettings.addEventListener("click", (e) => {
-  e.preventDefault();
-  const k = apiKeyInput.value.trim();
-  if (k) localStorage.setItem(LS_KEY, k);
-  else localStorage.removeItem(LS_KEY);
-  settingsModal.close();
-});
+  messageInput.addEventListener("input", () => {
+    const text = messageInput.value;
+    charCount.textContent = `${text.length} character${text.length === 1 ? "" : "s"}`;
+    if (!liveScanToggle.checked) return;
 
-// Sample
-sampleBtn.addEventListener("click", async () => {
-  const sample = `FINAL NOTICE: Your account will be SUSPENDED in 24 HOURS.
+    if (!text.trim()) {
+      setRisk(0, "Unknown", riskFill, riskLabel);
+      linksPanel.classList.add("hidden");
+      resultContainer.classList.add("hidden");
+      return;
+    }
+
+    const heur = scoreHeuristics(text);
+    setRisk(heur.score, heur.level, riskFill, riskLabel);
+    renderLinks(heur.linkFindings, heur.score, linksList, linksPanel);
+
+    resultContainer.classList.remove("hidden");
+    loadingIndicator.style.display = "none";
+    renderAnalysisCard({
+      finalLevel: heur.level,
+      finalReason: `Local score ${heur.score}/100.`,
+      heur,
+      ai: null,
+    }, analysisResult);
+  });
+
+  // Settings modal
+  settingsBtn.addEventListener("click", () => {
+    apiKeyInput.value = localStorage.getItem(LS_KEY);
+    settingsModal.showModal();
+  });
+  closeSettings.addEventListener("click", (e) => {
+    e.preventDefault();
+    settingsModal.close();
+  });
+  saveSettings.addEventListener("click", (e) => {
+    e.preventDefault();
+    const k = apiKeyInput.value.trim();
+    if (k) localStorage.setItem(LS_KEY, k);
+    else localStorage.removeItem(LS_KEY);
+    settingsModal.close();
+  });
+
+  // Sample
+  if (sampleBtn) {
+    sampleBtn.addEventListener("click", async () => {
+      const sample = `FINAL NOTICE: Your account will be SUSPENDED in 24 HOURS.
 Click https://secure-support-paypa1.com/login to verify your password and 2FA NOW.
 Failure to act will result in permanent closure and loss of funds.`;
-  messageInput.value = sample;
-  messageInput.dispatchEvent(new Event("input"));
-});
-
-// --- Consent workflow: mask then send to Gemini ---
-consentBtn.addEventListener("click", () => {
-  const text = messageInput.value.trim();
-  if (!text) {
-    alert("Please paste a message to send.");
-    return;
+      messageInput.value = sample;
+      messageInput.dispatchEvent(new Event("input"));
+    });
   }
-  const { masked } = maskSensitiveData(text);
-  maskedPreview.textContent = masked || "—";
-  consentCheckbox.checked = false;
-  sendConsentBtn.disabled = true;
-  consentModal.showModal();
-});
 
-consentCheckbox.addEventListener("change", () => {
-  sendConsentBtn.disabled = !consentCheckbox.checked;
-});
-
-cancelConsent.addEventListener("click", (e) => {
-  e.preventDefault();
-  consentModal.close();
-});
-closeConsent.addEventListener("click", (e) => {
-  e.preventDefault();
-  consentModal.close();
-});
-
-sendConsentBtn.addEventListener("click", async (e) => {
-  e.preventDefault();
-  const text = messageInput.value.trim();
-  if (!text) return;
-
-  // Close modal immediately and reset form
-  consentModal.close();
-  consentCheckbox.checked = false;
-  sendConsentBtn.disabled = true;
-
-  const { masked, report } = maskSensitiveData(text);
-
-  // show loading + call
-  resultContainer.classList.remove("hidden");
-  loadingIndicator.style.display = "flex";
-  analysisResult.innerHTML = "";
-  analysisResult.className = "y2k-result";
-
-  try {
-    const ai = await analyzeWithGemini(masked);
-    loadingIndicator.style.display = "none";
-
-    // build a small note about masking counts
-    let note = `Masked content sent. Redactions: `;
-    const parts = [];
-    for (const k of Object.keys(report)) {
-      if (report[k]) parts.push(`${k}: ${report[k]}`);
+  // --- Consent workflow: mask then send to Gemini ---
+  consentBtn.addEventListener("click", () => {
+    const text = messageInput.value.trim();
+    if (!text) {
+      alert("Please paste a message to send.");
+      return;
     }
-    if (parts.length === 0) note += "none detected.";
-    else note += parts.join(", ") + ".";
+    const { masked } = maskSensitiveData(text);
+    maskedPreview.textContent = masked || "—";
+    consentCheckbox.checked = false;
+    sendConsentBtn.disabled = true;
+    consentModal.showModal();
+  });
 
-    // combine heuristics for display
-    const heur = scoreHeuristics(text);
-    let finalLevel = heur.level;
-    let finalReason = `Local score ${heur.score}/100.`;
-    if (ai) {
-      const order = { Low: 0, Medium: 1, High: 2 };
-      finalLevel = order[ai.riskLevel] > order[heur.level] ? ai.riskLevel : heur.level;
-      finalReason = `Local score ${heur.score}/100. ${ai.reasoning}`;
+  consentCheckbox.addEventListener("change", () => {
+    sendConsentBtn.disabled = !consentCheckbox.checked;
+  });
+
+  cancelConsent.addEventListener("click", (e) => {
+    e.preventDefault();
+    consentModal.close();
+  });
+  closeConsent.addEventListener("click", (e) => {
+    e.preventDefault();
+    consentModal.close();
+  });
+
+  sendConsentBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const text = messageInput.value.trim();
+    if (!text) return;
+
+    // Close modal immediately and reset form
+    consentModal.close();
+    consentCheckbox.checked = false;
+    sendConsentBtn.disabled = true;
+
+    const { masked, report } = maskSensitiveData(text);
+
+    // show loading + call
+    resultContainer.classList.remove("hidden");
+    loadingIndicator.style.display = "flex";
+    analysisResult.innerHTML = "";
+    analysisResult.className = "y2k-result";
+
+    try {
+      const ai = await analyzeWithGemini(masked);
+      loadingIndicator.style.display = "none";
+
+      // build a small note about masking counts
+      let note = `Masked content sent. Redactions: `;
+      const parts = [];
+      for (const k of Object.keys(report)) {
+        if (report[k]) parts.push(`${k}: ${report[k]}`);
+      }
+      if (parts.length === 0) note += "none detected.";
+      else note += parts.join(", ") + ".";
+
+      // combine heuristics for display
+      const heur = scoreHeuristics(text);
+      let finalLevel = heur.level;
+      let finalReason = `Local score ${heur.score}/100.`;
+      if (ai) {
+        const order = { Low: 0, Medium: 1, High: 2 };
+        finalLevel = order[ai.riskLevel] > order[heur.level] ? ai.riskLevel : heur.level;
+        finalReason = `Local score ${heur.score}/100. ${ai.reasoning}`;
+      }
+
+      renderAnalysisCard({ finalLevel, finalReason, heur, ai, note }, analysisResult);
+    } catch (err) {
+      loadingIndicator.style.display = "none";
+      analysisResult.classList.add("phishing");
+      analysisResult.textContent = "An error occurred while sending masked content to Gemini. Please try again.";
     }
+  });
 
-    renderAnalysisCard({ finalLevel, finalReason, heur, ai, note });
-  } catch (err) {
-    loadingIndicator.style.display = "none";
-    analysisResult.classList.add("phishing");
-    analysisResult.textContent = "Error sending masked content to Gemini.";
-  }
-});
+}); // End DOMContentLoaded
