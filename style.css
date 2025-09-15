@@ -452,6 +452,97 @@
     }
   }
 
+  /* Punycode Warning Styles */
+  .punycode-warning {
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.15) 0%, rgba(239, 68, 68, 0.1) 100%);
+    border: 2px solid var(--danger-red);
+    border-left: 6px solid var(--danger-red);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    box-shadow: 0 8px 25px rgba(220, 38, 38, 0.2);
+  }
+
+  .punycode-warning-title {
+    color: var(--danger-red-light);
+    font-weight: 800;
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .punycode-warning-title::before {
+    content: "🚨";
+    font-size: 1.5rem;
+  }
+
+  .punycode-domain-card {
+    background: rgba(220, 38, 38, 0.1);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0.75rem 0;
+  }
+
+  .punycode-domain-name {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+    font-weight: 600;
+    color: var(--danger-red-light);
+    font-size: 1.1rem;
+  }
+
+  .punycode-warning-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0;
+  }
+
+  .punycode-warning-list li {
+    padding: 0.25rem 0;
+    color: var(--danger-red-light);
+    font-size: 0.9rem;
+  }
+
+  .punycode-warning-list li::before {
+    content: "⚠️ ";
+    margin-right: 0.5rem;
+  }
+
+  .punycode-targets {
+    background: rgba(220, 38, 38, 0.05);
+    border: 1px solid rgba(220, 38, 38, 0.2);
+    border-radius: 6px;
+    padding: 0.75rem;
+    margin-top: 0.75rem;
+  }
+
+  .punycode-targets-title {
+    color: var(--danger-red-light);
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .punycode-targets-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .punycode-targets-list li {
+    padding: 0.2rem 0;
+    color: var(--danger-red-light);
+    font-size: 0.85rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+  }
+
+  .punycode-targets-list li::before {
+    content: "🎭 ";
+    margin-right: 0.5rem;
+  }
+
   /* Dark Mode Optimizations */
   @media (prefers-color-scheme: dark) {
     :root {
